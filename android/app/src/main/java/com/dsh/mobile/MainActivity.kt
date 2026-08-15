@@ -14,6 +14,7 @@ import android.webkit.WebSettings
 import android.webkit.WebView
 import android.webkit.WebViewClient
 import android.widget.EditText
+import android.widget.ScrollView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -34,6 +35,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var connectButton: MaterialButton
     private lateinit var statusTextView: TextView
     private lateinit var statusDot: View
+    private lateinit var configScroll: ScrollView
 
     private val handler = Handler(Looper.getMainLooper())
     private var loadedUrl: String? = null
@@ -59,6 +61,7 @@ class MainActivity : AppCompatActivity() {
         connectButton = findViewById(R.id.connectButton)
         statusTextView = findViewById(R.id.statusTextView)
         statusDot = findViewById(R.id.statusDot)
+        configScroll = findViewById(R.id.configScroll)
 
         setupWebView()
         requestNotificationPermissionIfNeeded()
@@ -127,6 +130,7 @@ class MainActivity : AppCompatActivity() {
 
     private fun updateStatus() {
         statusTextView.text = SshTunnelState.message
+        configScroll.visibility = if (SshTunnelState.connected) View.GONE else View.VISIBLE
 
         when {
             SshTunnelState.connected -> {
