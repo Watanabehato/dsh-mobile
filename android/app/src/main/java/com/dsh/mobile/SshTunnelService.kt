@@ -52,6 +52,9 @@ class SshTunnelService : Service() {
     }
 
     private fun connect(config: SshConfig) {
+        SshTunnelState.connected = false
+        SshTunnelState.connecting = true
+        SshTunnelState.message = "正在连接 ${config.host} ..."
         executor.execute {
             try {
                 disconnectInternal()
@@ -74,11 +77,13 @@ class SshTunnelService : Service() {
 
                 currentSession = session
                 SshTunnelState.session = session
+                SshTunnelState.connecting = false
                 SshTunnelState.connected = true
                 SshTunnelState.localPort = config.localPort
                 SshTunnelState.message = "已连接：127.0.0.1:${config.localPort} -> 127.0.0.1:${config.dshPort}"
                 updateNotification(SshTunnelState.message)
             } catch (e: Exception) {
+                SshTunnelState.connecting = false
                 SshTunnelState.connected = false
                 SshTunnelState.message = "连接失败：${e.message ?: e.javaClass.simpleName}"
                 stopForeground(STOP_FOREGROUND_REMOVE)
@@ -90,6 +95,7 @@ class SshTunnelService : Service() {
     private fun disconnect() {
         executor.execute {
             disconnectInternal()
+            SshTunnelState.connecting = false
             SshTunnelState.connected = false
             SshTunnelState.session = null
             SshTunnelState.message = "已断开"
@@ -106,6 +112,7 @@ class SshTunnelService : Service() {
 
     override fun onDestroy() {
         disconnectInternal()
+        SshTunnelState.connecting = false
         SshTunnelState.connected = false
         SshTunnelState.session = null
         SshTunnelState.message = "未连接"

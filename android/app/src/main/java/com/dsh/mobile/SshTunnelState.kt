@@ -10,6 +10,9 @@ object SshTunnelState {
     var connected: Boolean = false
 
     @Volatile
+    var connecting: Boolean = false
+
+    @Volatile
     var message: String = "未连接"
 
     @Volatile

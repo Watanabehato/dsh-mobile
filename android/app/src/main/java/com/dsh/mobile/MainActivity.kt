@@ -3,15 +3,16 @@ package com.dsh.mobile
 import android.Manifest
 import android.annotation.SuppressLint
 import android.content.pm.PackageManager
+import android.content.res.ColorStateList
 import android.os.Build
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
+import android.view.View
 import android.webkit.WebChromeClient
 import android.webkit.WebSettings
 import android.webkit.WebView
 import android.webkit.WebViewClient
-import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
 import android.widget.Toast
@@ -19,6 +20,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import com.dsh.mobile.SshTunnelService.SshConfig
+import com.google.android.material.button.MaterialButton
 
 class MainActivity : AppCompatActivity() {
 
@@ -29,8 +31,9 @@ class MainActivity : AppCompatActivity() {
     private lateinit var passwordEditText: EditText
     private lateinit var dshPortEditText: EditText
     private lateinit var localPortEditText: EditText
-    private lateinit var connectButton: Button
+    private lateinit var connectButton: MaterialButton
     private lateinit var statusTextView: TextView
+    private lateinit var statusDot: View
 
     private val handler = Handler(Looper.getMainLooper())
     private var loadedUrl: String? = null
@@ -55,6 +58,7 @@ class MainActivity : AppCompatActivity() {
         localPortEditText = findViewById(R.id.localPortEditText)
         connectButton = findViewById(R.id.connectButton)
         statusTextView = findViewById(R.id.statusTextView)
+        statusDot = findViewById(R.id.statusDot)
 
         setupWebView()
         requestNotificationPermissionIfNeeded()
@@ -69,6 +73,7 @@ class MainActivity : AppCompatActivity() {
 
         connectButton.setOnClickListener {
             if (SshTunnelState.connected) {
+                SshTunnelState.connecting = false
                 SshTunnelService.stop(this)
                 connectButton.text = getString(R.string.connect)
             } else {
@@ -78,9 +83,12 @@ class MainActivity : AppCompatActivity() {
                     return@setOnClickListener
                 }
                 saveConfig(config)
+                SshTunnelState.connecting = true
+                SshTunnelState.connected = false
+                SshTunnelState.message = getString(R.string.connecting)
                 SshTunnelService.start(this, config)
                 connectButton.text = getString(R.string.disconnect)
-                statusTextView.text = getString(R.string.connecting)
+                updateStatus()
             }
         }
 
@@ -120,16 +128,34 @@ class MainActivity : AppCompatActivity() {
     private fun updateStatus() {
         statusTextView.text = SshTunnelState.message
 
-        if (SshTunnelState.connected) {
-            connectButton.text = getString(R.string.disconnect)
-            val url = "http://127.0.0.1:${SshTunnelState.localPort}"
-            if (loadedUrl != url) {
-                loadedUrl = url
-                webView.loadUrl(url)
+        when {
+            SshTunnelState.connected -> {
+                connectButton.text = getString(R.string.disconnect)
+                setStatusColor(R.color.status_connected)
+                val url = "http://127.0.0.1:${SshTunnelState.localPort}"
+                if (loadedUrl != url) {
+                    loadedUrl = url
+                    webView.loadUrl(url)
+                }
             }
-        } else {
-            connectButton.text = getString(R.string.connect)
+            SshTunnelState.connecting -> {
+                connectButton.text = getString(R.string.disconnect)
+                setStatusColor(R.color.status_connecting)
+            }
+            SshTunnelState.message.startsWith("连接失败") -> {
+                connectButton.text = getString(R.string.connect)
+                setStatusColor(R.color.status_error)
+            }
+            else -> {
+                connectButton.text = getString(R.string.connect)
+                setStatusColor(R.color.status_idle)
+            }
         }
+    }
+
+    private fun setStatusColor(colorRes: Int) {
+        val color = ContextCompat.getColor(this, colorRes)
+        statusDot.backgroundTintList = ColorStateList.valueOf(color)
     }
 
     private fun requestNotificationPermissionIfNeeded() {
