@@ -24,10 +24,10 @@
 ```
 手机 APK (WebView)
       │
-      │ http://127.0.0.1:8080
+      │ http://127.0.0.1:3080
       ▼
 Termux 内 SSH 本地端口转发
-      │ ssh -L 127.0.0.1:8080:127.0.0.1:<dsh-port> user@server
+      │ ssh -L 127.0.0.1:3080:127.0.0.1:<dsh-port> user@server
       ▼
 公网服务器 sshd
       │
@@ -47,7 +47,7 @@ dsh web 监听 127.0.0.1:<dsh-port>
 
 ```
 内网服务器（运行 dsh web）
-      │ ssh -R 127.0.0.1:8080:127.0.0.1:<dsh-port> user@relay-vps
+      │ ssh -R 127.0.0.1:3080:127.0.0.1:<dsh-port> user@relay-vps
       ▼
 公网中继 VPS（sshd + GatewayPorts 可选）
       │
@@ -56,7 +56,7 @@ dsh web 监听 127.0.0.1:<dsh-port>
 ```
 
 - 适合：已经有一台便宜的公网 VPS。
-- 注意：如果只让 VPS 的 `127.0.0.1:8080` 转发，手机还需要再 SSH 到 VPS 做本地转发；如果 VPS 开启 `GatewayPorts yes` 并绑定 `0.0.0.0`，手机可直接访问，但必须加鉴权/防火墙。
+- 注意：如果只让 VPS 的 `127.0.0.1:3080` 转发，手机还需要再 SSH 到 VPS 做本地转发；如果 VPS 开启 `GatewayPorts yes` 并绑定 `0.0.0.0`，手机可直接访问，但必须加鉴权/防火墙。
 
 #### B2：EasyTier 组网（推荐长期使用，NAT 穿透更友好）
 
@@ -102,7 +102,7 @@ EasyTier 虚拟局域网/P2P 网络
 1. **连接配置**
    - 场景选择：公网直连 / 反向隧道 / EasyTier。
    - 服务器地址、SSH 端口、用户名、dsh Web 端口。
-   - 隧道本地端口（默认 8080）。
+   - 隧道本地端口（默认 3080）。
 2. **隧道启动入口**
    - 方式 1：调用 Termux `RUN_COMMAND` Intent 执行预设脚本（需用户在 Termux 设置中允许外部应用执行命令）。
    - 方式 2：引导用户手动打开 Termux 运行脚本（最兼容）。
@@ -131,8 +131,8 @@ set -e
 SSH_HOST="${SSH_HOST:-your-server.com}"
 SSH_PORT="${SSH_PORT:-22}"
 SSH_USER="${SSH_USER:-user}"
-DSH_PORT="${DSH_PORT:-8080}"          # dsh web 实际端口
-LOCAL_PORT="${LOCAL_PORT:-8080}"      # 手机本地端口
+DSH_PORT="${DSH_PORT:-3080}"          # dsh web 实际端口
+LOCAL_PORT="${LOCAL_PORT:-3080}"      # 手机本地端口
 
 exec autossh -M 0 \
   -o "ServerAliveInterval=30" \
@@ -149,8 +149,8 @@ exec autossh -M 0 \
 
 ```bash
 # 在运行 dsh 的内网服务器上，用 systemd 或 screen 保持执行
-# 假设中继 VPS 用户为 relay，dsh web 端口 8080
-ssh -N -R 127.0.0.1:8080:127.0.0.1:8080 \
+# 假设中继 VPS 用户为 relay，dsh web 端口 3080
+ssh -N -R 127.0.0.1:3080:127.0.0.1:3080 \
   -o ServerAliveInterval=30 \
   -o ExitOnForwardFailure=yes \
   relay@your-vps.com
@@ -179,7 +179,7 @@ easytier-core \
   --ipv4 10.144.144.2
 ```
 
-之后手机 WebView 访问 `http://10.144.144.1:8080`。
+之后手机 WebView 访问 `http://10.144.144.1:3080`。
 
 > 具体参数以 EasyTier 官方文档为准；这里只展示设计方向。
 
@@ -276,7 +276,7 @@ After=network.target
 [Service]
 User=dsh
 WorkingDirectory=/home/dsh
-ExecStart=/usr/local/bin/dsh web --host 127.0.0.1 --port 8080
+ExecStart=/usr/local/bin/dsh web --host 127.0.0.1 --port 3080
 Restart=always
 RestartSec=3
 
@@ -294,7 +294,7 @@ Wants=network-online.target
 
 [Service]
 User=tunnel
-ExecStart=/usr/bin/ssh -N -R 127.0.0.1:8080:127.0.0.1:8080 \
+ExecStart=/usr/bin/ssh -N -R 127.0.0.1:3080:127.0.0.1:3080 \
   -o ServerAliveInterval=30 \
   -o ExitOnForwardFailure=yes \
   relay@your-vps.com
@@ -331,9 +331,9 @@ WantedBy=multi-user.target
 ## 7. 开发与开源路线图
 
 ### Phase 0：手动验证（半天）
-1. 在一台服务器上启动 `dsh web --host 127.0.0.1 --port 8080`。
+1. 在一台服务器上启动 `dsh web --host 127.0.0.1 --port 3080`。
 2. 手机 Termux 安装 `openssh autossh`。
-3. 手动运行 SSH 本地转发，手机浏览器访问 `127.0.0.1:8080`，确认 dsh Web 可用。
+3. 手动运行 SSH 本地转发，手机浏览器访问 `127.0.0.1:3080`，确认 dsh Web 可用。
 
 ### Phase 1：APK WebView 壳（1-2 天）
 1. 创建 Android 工程。

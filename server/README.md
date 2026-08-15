@@ -11,7 +11,7 @@ sudo systemctl enable --now dsh-web
 确认监听：
 
 ```bash
-ss -lntp | grep 8080
+ss -lntp | grep 3080
 ```
 
 ## 反向隧道（内网服务器）
@@ -28,4 +28,4 @@ sudo systemctl daemon-reload
 sudo systemctl enable --now easytier
 ```
 
-> 所有示例都假设 dsh web 监听 `127.0.0.1:8080`，请按实际端口调整。
+> 所有示例都假设 dsh web 监听 `127.0.0.1:3080`，请按实际端口调整。

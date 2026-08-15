@@ -12,7 +12,7 @@
 ### 1. 服务端
 
 ```bash
-dsh web --host 127.0.0.1 --port 8080
+dsh web --host 127.0.0.1 --port 3080
 ```
 
 生产环境建议用 systemd 托管，参考 `server/dsh-web.service`。
@@ -30,7 +30,7 @@ vim ~/bin/dsh-tunnel.sh
 ~/bin/dsh-tunnel.sh
 ```
 
-然后手机浏览器打开 `http://127.0.0.1:8080` 验证。
+然后手机浏览器打开 `http://127.0.0.1:3080` 验证。
 
 ### 3. Android App
 
@@ -39,7 +39,7 @@ vim ~/bin/dsh-tunnel.sh
 App 内填写：
 
 - 隧道类型：`ssh-local` / `ssh-reverse` / `easytier`
-- 本地 Web 地址：`http://127.0.0.1:8080` 或 EasyTier 虚拟 IP
+- 本地 Web 地址：`http://127.0.0.1:3080` 或 EasyTier 虚拟 IP
 - 可选：通过 Termux `RUN_COMMAND` 一键启动隧道
 
 ## 目录结构

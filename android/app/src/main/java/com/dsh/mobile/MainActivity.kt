@@ -28,7 +28,7 @@ class MainActivity : AppCompatActivity() {
         setupWebView()
 
         val prefs = getSharedPreferences("dsh_mobile", MODE_PRIVATE)
-        urlEditText.setText(prefs.getString("last_url", "http://127.0.0.1:8080"))
+        urlEditText.setText(prefs.getString("last_url", "http://127.0.0.1:3080"))
 
         openButton.setOnClickListener {
             val url = urlEditText.text.toString().trim()

@@ -9,8 +9,8 @@ set -euo pipefail
 SSH_HOST="${SSH_HOST:-your-server.com}"
 SSH_PORT="${SSH_PORT:-22}"
 SSH_USER="${SSH_USER:-user}"
-DSH_PORT="${DSH_PORT:-8080}"          # 服务器上 dsh web 的端口
-LOCAL_PORT="${LOCAL_PORT:-8080}"      # 手机本地监听端口
+DSH_PORT="${DSH_PORT:-3080}"          # 服务器上 dsh web 的端口
+LOCAL_PORT="${LOCAL_PORT:-3080}"      # 手机本地监听端口
 
 echo "==> 启动 SSH 隧道: ${SSH_USER}@${SSH_HOST}:${SSH_PORT} -> 127.0.0.1:${DSH_PORT}"
 
