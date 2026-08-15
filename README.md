@@ -42,6 +42,29 @@ App 内填写：
 - 本地 Web 地址：`http://127.0.0.1:3080` 或 EasyTier 虚拟 IP
 - 可选：通过 Termux `RUN_COMMAND` 一键启动隧道
 
+## 用 GitHub Actions 打包 APK
+
+仓库已包含 `.github/workflows/build-apk.yml`，推到 GitHub 后：
+
+```bash
+# 登录 GitHub CLI（只需一次）
+gh auth login
+
+# 推送代码
+git remote add origin git@github.com:<你的用户名>/<仓库名>.git
+git push -u origin main
+
+# 手动触发构建并下载 APK
+bash scripts/gh-build.sh
+```
+
+也可以在 GitHub 仓库页面：
+
+1. 打开 **Actions**
+2. 选择 **Build APK**
+3. 点 **Run workflow**
+4. 构建完成后下载 `dsh-mobile-debug` 工件里的 APK
+
 ## 目录结构
 
 ```text
