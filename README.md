@@ -11,7 +11,9 @@
 
 - 一个 APK 搞定，不需要额外安装 Termux、SSH 客户端或 EasyTier
 - 打开 App 填写服务器信息，点“连接”即可
-- 连接成功后自动在 WebView 里打开 `http://127.0.0.1:本地端口`
+- 连接成功后自动隐藏配置表单，只显示 dsh Web UI
+- 断开连接后自动恢复配置表单，方便修改重连
+- Material 3 风格界面，带连接状态提示
 
 ## 快速开始
 
@@ -34,7 +36,11 @@ dsh web --host 127.0.0.1 --port 3080
 - dsh 端口（默认 3080）
 - 本地端口（默认 3080）
 
-点“连接”，连接成功后就会自动打开 dsh Web UI。
+点“连接”，连接成功后配置表单自动隐藏，WebView 会自动打开 dsh Web UI。
+
+## 版本
+
+当前版本：`0.4.0`
 
 ## 用 GitHub Actions 打包 APK
 
@@ -58,6 +64,17 @@ bash scripts/gh-build.sh
 2. 选择 **Build APK**
 3. 点 **Run workflow**
 4. 构建完成后下载 `dsh-mobile-debug` 工件里的 APK
+
+## 发布 Release
+
+仓库支持通过 Git tag 触发 Release 构建：
+
+```bash
+git tag dsh-harness
+git push origin dsh-harness
+```
+
+GitHub Actions 会自动构建 APK 并发布到 Release。
 
 ## 目录结构
 
