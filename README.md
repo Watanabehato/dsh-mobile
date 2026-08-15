@@ -2,10 +2,16 @@
 
 在 Android 手机上随时随地使用 `dsh web` 的开源客户端。
 
-- APK：Kotlin + WebView 壳
-- 隧道：Termux + OpenSSH / autossh
-- 组网：EasyTier（可选）
+- APK：Kotlin + WebView
+- SSH 隧道：**内置在 APK 里**，不需要安装 Termux
+- 连接方式：APK 通过 JSch 建立 SSH 本地端口转发
 - 服务端：dsh web + systemd 示例
+
+## 特点
+
+- 一个 APK 搞定，不需要额外安装 Termux、SSH 客户端或 EasyTier
+- 打开 App 填写服务器信息，点“连接”即可
+- 连接成功后自动在 WebView 里打开 `http://127.0.0.1:本地端口`
 
 ## 快速开始
 
@@ -17,30 +23,18 @@ dsh web --host 127.0.0.1 --port 3080
 
 生产环境建议用 systemd 托管，参考 `server/dsh-web.service`。
 
-### 2. Termux 手机端
+### 2. Android App
 
-```bash
-# 安装依赖
-bash termux/setup.sh
+直接安装 APK，打开后填写：
 
-# 编辑隧道脚本中的服务器信息
-vim ~/bin/dsh-tunnel.sh
+- SSH 服务器地址
+- SSH 端口（默认 22）
+- 用户名
+- 密码
+- dsh 端口（默认 3080）
+- 本地端口（默认 3080）
 
-# 启动隧道
-~/bin/dsh-tunnel.sh
-```
-
-然后手机浏览器打开 `http://127.0.0.1:3080` 验证。
-
-### 3. Android App
-
-用 Android Studio 打开 `android/` 目录，构建并安装到手机。
-
-App 内填写：
-
-- 隧道类型：`ssh-local` / `ssh-reverse` / `easytier`
-- 本地 Web 地址：`http://127.0.0.1:3080` 或 EasyTier 虚拟 IP
-- 可选：通过 Termux `RUN_COMMAND` 一键启动隧道
+点“连接”，连接成功后就会自动打开 dsh Web UI。
 
 ## 用 GitHub Actions 打包 APK
 
@@ -68,8 +62,8 @@ bash scripts/gh-build.sh
 ## 目录结构
 
 ```text
-android/       Android Studio 工程
-termux/        Termux 安装与隧道脚本
+android/       Android Studio 工程（内置 SSH 隧道）
+termux/        旧版 Termux 脚本，保留作为参考/备用方案
 server/        systemd 服务示例
 scripts/       构建辅助脚本
 docs/          架构文档

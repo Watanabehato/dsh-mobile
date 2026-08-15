@@ -2,38 +2,91 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:padding="8dp">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/label_host"
+        android:textStyle="bold" />
+
+    <EditText
+        android:id="@+id/hostEditText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="@string/hint_host"
+        android:inputType="textUri"
+        android:importantForAutofill="no" />
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:padding="12dp">
+        android:orientation="horizontal">
 
         <EditText
-            android:id="@+id/urlEditText"
+            android:id="@+id/sshPortEditText"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:hint="@string/url_hint"
-            android:inputType="textUri"
-            android:importantForAutofill="no"
-            android:autofillHints="" />
+            android:hint="@string/hint_ssh_port"
+            android:inputType="number"
+            android:importantForAutofill="no" />
 
-        <Button
-            android:id="@+id/openButton"
-            android:layout_width="wrap_content"
+        <EditText
+            android:id="@+id/usernameEditText"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:text="@string/open" />
+            android:layout_weight="2"
+            android:hint="@string/hint_username"
+            android:inputType="text"
+            android:importantForAutofill="no" />
+    </LinearLayout>
+
+    <EditText
+        android:id="@+id/passwordEditText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="@string/hint_password"
+        android:inputType="textPassword"
+        android:importantForAutofill="no" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <EditText
+            android:id="@+id/dshPortEditText"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:hint="@string/hint_dsh_port"
+            android:inputType="number"
+            android:importantForAutofill="no" />
+
+        <EditText
+            android:id="@+id/localPortEditText"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:hint="@string/hint_local_port"
+            android:inputType="number"
+            android:importantForAutofill="no" />
     </LinearLayout>
 
     <Button
-        android:id="@+id/termuxButton"
+        android:id="@+id/connectButton"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginHorizontal="12dp"
-        android:layout_marginBottom="4dp"
-        android:text="@string/start_termux_tunnel" />
+        android:text="@string/connect" />
+
+    <TextView
+        android:id="@+id/statusTextView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/not_connected"
+        android:textStyle="bold" />
 
     <WebView
         android:id="@+id/webView"

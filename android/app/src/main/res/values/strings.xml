@@ -1,8 +1,15 @@
 <resources>
     <string name="app_name">dsh Mobile</string>
-    <string name="url_hint">例如 http://127.0.0.1:3080</string>
-    <string name="open">打开 dsh</string>
-    <string name="start_termux_tunnel">启动 Termux 隧道</string>
-    <string name="tunnel_started">已尝试启动 Termux 隧道</string>
-    <string name="tunnel_manual_hint">如果未启动，请手动在 Termux 中运行 ~/bin/dsh-tunnel.sh</string>
+    <string name="label_host">SSH 服务器</string>
+    <string name="hint_host">例如 your-server.com 或 IP</string>
+    <string name="hint_ssh_port">SSH端口</string>
+    <string name="hint_username">用户名</string>
+    <string name="hint_password">密码</string>
+    <string name="hint_dsh_port">dsh端口</string>
+    <string name="hint_local_port">本地端口</string>
+    <string name="connect">连接</string>
+    <string name="disconnect">断开</string>
+    <string name="connecting">正在连接…</string>
+    <string name="not_connected">未连接</string>
+    <string name="config_invalid">请填写服务器、用户名和密码</string>
 </resources>
