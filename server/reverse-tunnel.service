@@ -1,0 +1,17 @@
+[Unit]
+Description=Reverse SSH tunnel to relay VPS for dsh-mobile
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+User=tunnel
+ExecStart=/usr/bin/ssh -N -R 127.0.0.1:8080:127.0.0.1:8080 \
+  -o ServerAliveInterval=30 \
+  -o ServerAliveCountMax=3 \
+  -o ExitOnForwardFailure=yes \
+  relay@your-vps.com
+Restart=always
+RestartSec=5
+
+[Install]
+WantedBy=multi-user.target

@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">dsh Mobile</string>
+    <string name="url_hint">例如 http://127.0.0.1:8080</string>
+    <string name="open">打开 dsh</string>
+    <string name="start_termux_tunnel">启动 Termux 隧道</string>
+    <string name="tunnel_started">已尝试启动 Termux 隧道</string>
+    <string name="tunnel_manual_hint">如果未启动，请手动在 Termux 中运行 ~/bin/dsh-tunnel.sh</string>
+</resources>

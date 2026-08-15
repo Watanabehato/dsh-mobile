@@ -1,0 +1,16 @@
+[Unit]
+Description=EasyTier mesh node for dsh-mobile
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+User=easytier
+ExecStart=/usr/local/bin/easytier-core \
+  -n dsh-net \
+  -k YOUR_NETWORK_SECRET \
+  --ipv4 10.144.144.1
+Restart=always
+RestartSec=3
+
+[Install]
+WantedBy=multi-user.target

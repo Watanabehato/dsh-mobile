@@ -1,0 +1,24 @@
+# Android / Gradle
+.gradle/
+build/
+local.properties
+*.apk
+*.aab
+.cxx/
+
+# IDE
+.idea/
+*.iml
+.vscode/
+
+# OS
+.DS_Store
+
+# Keystore / secrets
+*.jks
+*.keystore
+secrets/
+.env
+
+# Termux local runtime
+termux/.runtime/
